@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Añadir casal</title>
+</head>
+<body>
+    @include('components.header')
+    <form action="{{ route('casal.store') }}" method="POST">
+        @csrf
+        <label for="nom">Nombre:</label>
+        <input type="text" name="nom" value="{{ old('nom') }}" required>
+        @if ($errors->has('nom'))
+            <div class="invalid-feedback">{{ $errors->first('nom') }}</div>
+        @endif
+        <br>
+        <label for="data_inici">Fecha de inicio:</label>
+        <input type="date" name="data_inici" value="{{ old('data_inici') }}" min="{{ date('Y-m-d') }}" required>
+        @if ($errors->has('data_inici'))
+            <div class="invalid-feedback">{{ $errors->first('data_inici') }}</div>
+        @endif
+        <br>
+        <label for="data_final">Fecha final:</label>
+        <input type="date" name="data_final" value="{{ old('data_final') }}" min="{{ date('Y-m-d') }}" required>
+        @if ($errors->has('data_final'))
+            <div class="invalid-feedback">{{ $errors->first('data_final') }}</div>
+        @endif
+        <br>
+        <label for="n_places">Número de plazas:</label>
+        <input type="number" name="n_places" value="{{ old('n_places') }}" required>
+        @if ($errors->has('n_places'))
+            <div class="invalid-feedback">{{ $errors->first('n_places') }}</div>
+        @endif
+        <br>
+        <label for="id_ciutat">Ciudad:</label>
+        <select name="id_ciutat" required>
+            <option value="">Seleccione una ciudad</option>
+            @foreach($ciutats as $ciutat)
+                <option value="{{ $ciutat->id }}" {{ old('id_ciutat') == $ciutat->id ? 'selected' : '' }}>
+                    {{ $ciutat->nom }}
+                </option>
+            @endforeach
+        </select>
+        @if ($errors->has('id_ciutat'))
+            <div class="invalid-feedback">{{ $errors->first('id_ciutat') }}</div>
+        @endif
+        <br>
+        <button type="submit">Guardar</button>
+    </form>
+    <a href="{{route('user.logout')}}">Cerrar sesion</a>
+    <br>
+    <a href="{{route('user.casals')}}">Volver atras</a>
+    @include('components.footer')
+</body>
+</html>
+<style>
+.invalid-feedback {
+    color: red;
+}
+</style>
